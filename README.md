@@ -43,6 +43,21 @@ Creates a MongoDB document from the given object and stores it into the given co
 * collection - the collection to store the object in
 * callback - the callback function receiving the result object return by the insertion operation
 
+```javascript
+var DB_URI = 'mongodb://localhost:27017/mongocrud-test';
+var COLLECTION = 'objectStore';
+var OBJ = {
+    name: 'Athyrion'
+};
+var ID;
+...
+mongocrud.create(OBJ, COLLECTION, function(id) {
+    console.log(id);
+    ID = id;
+});
+...
+```
+
 
 #### read(criteria, collection, callback)
 Searches the given collection for documents matching the given criteria and returns the first one found. The criterium should be in most cases using the _id from the creation process, e.g. criteria = {_id: _id}.
@@ -51,12 +66,30 @@ Searches the given collection for documents matching the given criteria and retu
 *collection - the collection to search in
 *callback - the callback function receiving the found document or, in case of an error, the error object
 
+```javascript
+...
+mongocrud.read({ _id: ID }, COLLECTION, function(doc) {
+    console.log(doc); // { _id: 55617c9226d7023b19edcdd1, name: "Athyrion" }
+});
+...
+```
+
 
 #### readAll(collection, callback)
 Returns all documents stored in the given collection as an array.
 
 *collection - the collection to search in
 *callback - the callback function receiving an array containing the results
+
+```javascript
+...
+mongocrud.readAll(COLLECTION, function(docs) {
+    console.log(docs); // [ { _id: 55617c9226d7023b19edcdd1, name: "Athyrion" }, ...]
+});
+...
+```
+
+
 
 #### update(criteria, obj, collection, callback)
 Replaces the object in the given collection with given object.
@@ -66,9 +99,28 @@ Replaces the object in the given collection with given object.
 *collection - the collection to search in
 *callback - the callback function receiving the result object returned by MongoDB
 
+```javascript
+...
+
+OBJ.name = 'Athyrion-Westeros';
+
+mongocrud.update({ _id: ID }, OBJ, COLLECTION, function(res) {
+    console.log(res); // { ok: 1, n: 1 }
+});
+...
+```
+
 #### delete(critera, collection, callback)
 Deletes the document that matches the given criteria.
 
 *criteria - the criteria to search for in the database, usually the object's _id
 *collection - the collection to search in
 *callback - the callback function receiving the result object returned by MongoDB
+
+```javascript
+...
+mongocrud.delete({ _id: ID }, COLLECTION, function(res) {
+    console.log(res); // { ok: 1, n: 1 }
+});
+...
+```
