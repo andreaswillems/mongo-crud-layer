@@ -9,13 +9,16 @@ var OBJ = {
     name: 'Athyrion'
 };
 
-var mongocrud = new MongoCrud(DB_URI);
+
 
 
 describe('Testing MongoCrudLayer', function() {
     describe('#connect()', function() {
         it('should connect to mongodb and return the db object', function() {
-             assert.equal(true, false);
+            var mongocrud = new MongoCrud(DB_URI);
+            mongocrud.connect(function(db) {
+                assert(db instanceof Db);
+            });
         });
     });
 });
