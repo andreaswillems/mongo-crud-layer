@@ -16,8 +16,7 @@
     "crud"
   ],
   "dependencies": {
-    "mongodb": "2.0.33",
-    "q": "1.2.x"
+    "mongodb": "2.0.33"
   },
   "devDependencies": {
     "mocha": "1.17.x",
