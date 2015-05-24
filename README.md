@@ -16,14 +16,14 @@ or add it to your `package.json`.
 
 ### 1. Instantiation
 
-First, create a new MongoCrud instance to store the databases URI and (optional) some optional options.
+First, create a new MongoCrud instance to store the databases URI and (optional) some options.
 
 ```javascript
 var mongocrud = new MongoCrud(uri, options);
 ```
 
-*uri - the URI to MongoDB, e.g. mongodb://localhost:27017/mongocrud-test
-*options - optional settings
+* uri - the URI to MongoDB, e.g. mongodb://localhost:27017/mongocrud-test
+* options - optional settings
 
 ```javascript
 var MongoCrud = require('mongo-crud-layer');
@@ -62,9 +62,9 @@ mongocrud.create(OBJ, COLLECTION, function(id) {
 #### read(criteria, collection, callback)
 Searches the given collection for documents matching the given criteria and returns the first one found. The criterium should be in most cases using the _id from the creation process, e.g. criteria = {_id: _id}.
 
-*criteria - the criteria to search for in the database, usually the object's _id
-*collection - the collection to search in
-*callback - the callback function receiving the found document or, in case of an error, the error object
+* criteria - the criteria to search for in the database, usually the object's _id
+* collection - the collection to search in
+* callback - the callback function receiving the found document or, in case of an error, the error object
 
 ```javascript
 ...
@@ -78,8 +78,8 @@ mongocrud.read({ _id: ID }, COLLECTION, function(doc) {
 #### readAll(collection, callback)
 Returns all documents stored in the given collection as an array.
 
-*collection - the collection to search in
-*callback - the callback function receiving an array containing the results
+* collection - the collection to search in
+* callback - the callback function receiving an array containing the results
 
 ```javascript
 ...
@@ -94,10 +94,10 @@ mongocrud.readAll(COLLECTION, function(docs) {
 #### update(criteria, obj, collection, callback)
 Replaces the object in the given collection with given object.
 
-*criteria - the criteria to search for in the database, usually the object's _id
-*obj - the replacing object
-*collection - the collection to search in
-*callback - the callback function receiving the result object returned by MongoDB
+* criteria - the criteria to search for in the database, usually the object's _id
+* obj - the replacing object
+* collection - the collection to search in
+* callback - the callback function receiving the result object returned by MongoDB
 
 ```javascript
 ...
@@ -113,9 +113,9 @@ mongocrud.update({ _id: ID }, OBJ, COLLECTION, function(res) {
 #### delete(critera, collection, callback)
 Deletes the document that matches the given criteria.
 
-*criteria - the criteria to search for in the database, usually the object's _id
-*collection - the collection to search in
-*callback - the callback function receiving the result object returned by MongoDB
+* criteria - the criteria to search for in the database, usually the object's _id
+* collection - the collection to search in
+* callback - the callback function receiving the result object returned by MongoDB
 
 ```javascript
 ...
