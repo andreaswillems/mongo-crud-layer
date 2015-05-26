@@ -4,7 +4,7 @@
   "description": "A simple CRUD layer for node-mongodb-native v2",
   "author": "Andreas Willems <dev.athyrion@gmail.com>",
   "scripts": {
-    "test": "NODE_ENV=test mocha -R spec test/"
+    "test": "mocha test/"
   },
   "main": "./index.js",
   "repository": {
@@ -16,13 +16,15 @@
     "crud"
   ],
   "dependencies": {
+    "depd": "^1.0.1",
     "mongodb": "2.0.33"
   },
   "devDependencies": {
+    "async": "^1.0.0",
     "mocha": "1.17.x",
     "should": "3.1.x"
   },
-  "licence": "MIT",
+  "license": "MIT",
   "engines": {
     "node": ">=0.12"
   }
