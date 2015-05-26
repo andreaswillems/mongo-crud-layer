@@ -16,11 +16,14 @@
     "crud"
   ],
   "dependencies": {
+    "coveralls": "^2.11.2",
     "depd": "^1.0.1",
+    "mocha-lcov-reporter": "0.0.2",
     "mongodb": "2.0.33"
   },
   "devDependencies": {
     "async": "^1.0.0",
+    "gulp": "^3.8.11",
     "mocha": "1.17.x"
   },
   "license": "MIT",

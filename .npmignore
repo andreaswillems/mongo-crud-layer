@@ -18,3 +18,5 @@ node_modules
 .gitignore
 .idea
 test
+
+.coveralls.yml
