@@ -1,4 +1,4 @@
-# Mongo-CRUD-Layer
+# Mongo-CRUD-Layer [![Build Status](https://travis-ci.org/Athyrion/mongo-crud-layer.svg?branch=master)](https://travis-ci.org/Athyrion/mongo-crud-layer)
 
 A simple CRUD-interface for the node-mongodb-native driver.
 Abstracts the creation, reading, updating and deleting of documents
