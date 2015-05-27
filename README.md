@@ -1,6 +1,6 @@
 # Mongo-CRUD-Layer 
 [![Build Status](https://travis-ci.org/Athyrion/mongo-crud-layer.svg?branch=master)](https://travis-ci.org/Athyrion/mongo-crud-layer) 
-[![npm version](https://badge.fury.io/js/mongo-crud-layer.png)](http://badge.fury.io/js/mongo-crud-layer) 
+[![npm version](https://badge.fury.io/js/mongo-crud-layer.svg)](http://badge.fury.io/js/mongo-crud-layer) 
 [![Coverage Status](https://coveralls.io/repos/Athyrion/mongo-crud-layer/badge.svg?branch=master)](https://coveralls.io/r/Athyrion/mongo-crud-layer?branch=master)
 
 A simple CRUD-interface for the node-mongodb-native driver.
@@ -130,3 +130,14 @@ mongocrud.delete({ _id: ID }, COLLECTION, function(res) {
 });
 ...
 ```
+
+#### close(callback)
+Closes the connection to the database.
+
+* callback - the callback function receiving null, if the closing was successful, otherwise an MongoError
+
+```javascript
+...
+mongocrud.close(function(result) {
+    // handle error
+});
