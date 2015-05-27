@@ -134,7 +134,7 @@ mongocrud.delete({ _id: ID }, COLLECTION, function(res) {
 #### close(callback)
 Closes the connection to the database.
 
-* callback - the callback function receiving null, if the closing was successful, otherwise an MongoError
+* callback - the callback function receiving null, if the closing was successful, otherwise a MongoError
 
 ```javascript
 ...
