@@ -1,4 +1,4 @@
-# Mongo-CRUD-Layer [![Build Status](https://travis-ci.org/Athyrion/mongo-crud-layer.svg?branch=master)](https://travis-ci.org/Athyrion/mongo-crud-layer) [![npm version](https://badge.fury.io/js/mongo-crud-layer.svg)](http://badge.fury.io/js/mongo-crud-layer)
+# Mongo-CRUD-Layer [![Build Status](https://travis-ci.org/Athyrion/mongo-crud-layer.svg?branch=master)](https://travis-ci.org/Athyrion/mongo-crud-layer) [![npm version](https://badge.fury.io/js/mongo-crud-layer.svg)](http://badge.fury.io/js/mongo-crud-layer) [![Coverage Status](https://coveralls.io/repos/Athyrion/mongo-crud-layer/badge.svg?branch=extract_regular_ops)](https://coveralls.io/r/Athyrion/mongo-crud-layer?branch=extract_regular_ops)
 
 A simple CRUD-interface for the node-mongodb-native driver.
 Abstracts the creation, reading, updating and deleting of documents
