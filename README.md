@@ -4,7 +4,8 @@ A simple CRUD-interface for the node-mongodb-native driver.
 Abstracts the creation, reading, updating and deleting of documents
 into more comfortable methods.
 
-Upcoming features: support for GridFS / GridStore
+Upcoming features: 
+* support for GridFS / GridStore
 
 ## Installation
 
