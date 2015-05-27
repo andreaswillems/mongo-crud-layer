@@ -1,6 +1,7 @@
 var assert = require('assert');
 var MongoCrud = require('../index.js');
 var MongoClient = require('mongodb').MongoClient;
+var MongoError = require('mongodb').MongoError;
 var ObjectID = require('mongodb').ObjectID;
 var Db = require('mongodb').Db;
 
@@ -43,6 +44,15 @@ describe('Testing MongoCrudLayer', function() {
     });
 
     describe('#create()', function() {
+        it('should throw an error when providing less than 3 arguments',
+            function(done) {
+                assert.throws(
+                    mongoCrud.create(OBJ, function(done) {})
+                );
+                done();
+            }
+        );
+
         it('should return the id of the inserted document', function(done) {
             mongoCrud.create(OBJ, COLLECTION, function(id) {
                 ID = id;
@@ -54,6 +64,15 @@ describe('Testing MongoCrudLayer', function() {
     });
 
     describe('#read()', function() {
+        it('should throw an error when providing less than 3 arguments',
+            function(done) {
+                assert.throws(
+                    mongoCrud.read(ID, function(done) {})
+                );
+                done();
+            }
+        );
+
         it('should return a document', function(done) {
             mongoCrud.read({_id: ID}, COLLECTION, function(doc) {
                 assert.equal(doc._id.toString(), ID);
@@ -64,6 +83,15 @@ describe('Testing MongoCrudLayer', function() {
     });
 
     describe('#readAll()', function() {
+        it('should throw an error when providing less than 2 arguments',
+            function(done) {
+                assert.throws(
+                    mongoCrud.readAll(function(done) {})
+                );
+                done();
+            }
+        );
+
         it('should return an array of documents', function(done) {
             mongoCrud.readAll(COLLECTION, function(results) {
                 assert.equal(results.length, 1);
@@ -74,6 +102,15 @@ describe('Testing MongoCrudLayer', function() {
     });
 
     describe('#update()', function() {
+        it('should throw an error when providing less than 4 arguments',
+            function(done) {
+                assert.throws(
+                    mongoCrud.update(OBJ, function(done) {})
+                );
+                done();
+            }
+        );
+
         it('should update the stored document and return a result object',
             function(done) {
                 OBJ.name = 'Athyrion Westeros';
@@ -99,6 +136,15 @@ describe('Testing MongoCrudLayer', function() {
     });
 
     describe('#delete()', function() {
+        it('should throw an error when providing less than 3 arguments',
+            function(done) {
+                assert.throws(
+                    mongoCrud.delete(OBJ, function(done) {})
+                );
+                done();
+            }
+        );
+
         it('should delete the stored document and return a result object',
             function(done) {
                 OBJ.name = 'Athyrion Westeros';
@@ -113,6 +159,15 @@ describe('Testing MongoCrudLayer', function() {
                 });
             }
         );
+    });
+
+    describe('#close()', function() {
+        it('should close the database connection', function(done) {
+            mongoCrud.close(function(res) {
+                assert.equal(null, res);
+                done();
+            });
+        });
     });
 });
 

@@ -1,5 +1,5 @@
 var fs = require('fs');
-var DEBUG = false;
+var DEBUG = true;
 
 module.exports = function(msg) {
     if (DEBUG) {
