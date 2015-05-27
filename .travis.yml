@@ -4,5 +4,8 @@ node_js:
 services:
   - mongodb
 
+install:
+  npm install -g istanbul
+
 after_script:
   make coveralls
