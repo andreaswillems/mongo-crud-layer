@@ -48,10 +48,8 @@ describe('Testing MongoCrudLayer', function() {
     describe('#create()', function() {
         it('should throw an error when providing less than 3 arguments',
             function(done) {
-
                 var fn = function() {
-                    if (mongoCrud.create()
-                        instanceof  WrongNumberOfArgumentsError) {
+                    if (mongoCrud.create() instanceof  Error) {
                         throw new Error(
                             'Wrong number of arguments; 3 arguments necessary');
                     }
@@ -82,8 +80,19 @@ describe('Testing MongoCrudLayer', function() {
     describe('#read()', function() {
         it('should throw an error when providing less than 3 arguments',
             function(done) {
+                var fn = function() {
+                    if (mongoCrud.read() instanceof Error) {
+                        throw new Error(
+                            'Wrong number of arguments; 3 arguments necessary');
+                    }
+                };
+
                 assert.throws(
-                    mongoCrud.read(ID, function(done) {})
+                    // block
+                    function() {
+                        fn();
+                    },
+                    /Wrong number of arguments; 3 arguments necessary/
                 );
                 done();
             }
@@ -102,8 +111,20 @@ describe('Testing MongoCrudLayer', function() {
     describe('#readAll()', function() {
         it('should throw an error when providing less than 2 arguments',
             function(done) {
+                var fn = function() {
+                    if (mongoCrud.read() instanceof Error) {
+                        throw new Error(
+                            'Wrong number of arguments; 2 arguments necessary'
+                        );
+                    }
+                };
+
                 assert.throws(
-                    mongoCrud.readAll(function(done) {})
+                    // block
+                    function() {
+                        fn();
+                    },
+                    /Wrong number of arguments; 2 arguments necessary/
                 );
                 done();
             }
@@ -122,8 +143,20 @@ describe('Testing MongoCrudLayer', function() {
     describe('#update()', function() {
         it('should throw an error when providing less than 4 arguments',
             function(done) {
+                var fn = function() {
+                    if (mongoCrud.read() instanceof Error) {
+                        throw new Error(
+                            'Wrong number of arguments; 4 arguments necessary'
+                        );
+                    }
+                };
+
                 assert.throws(
-                    mongoCrud.update(OBJ, function(done) {})
+                    // block
+                    function() {
+                        fn();
+                    },
+                    /Wrong number of arguments; 4 arguments necessary/
                 );
                 done();
             }
@@ -159,8 +192,20 @@ describe('Testing MongoCrudLayer', function() {
     describe('#delete()', function() {
         it('should throw an error when providing less than 3 arguments',
             function(done) {
+                var fn = function() {
+                    if (mongoCrud.read() instanceof Error) {
+                        throw new Error(
+                            'Wrong number of arguments; 3 arguments necessary'
+                        );
+                    }
+                };
+
                 assert.throws(
-                    mongoCrud.delete(OBJ, function(done) {})
+                    // block
+                    function() {
+                        fn();
+                    },
+                    /Wrong number of arguments; 3 arguments necessary/
                 );
                 done();
             }
@@ -194,4 +239,3 @@ describe('Testing MongoCrudLayer', function() {
         });
     });
 });
-
