@@ -54,7 +54,8 @@ describe('Testing MongoCrudLayer', function() {
         );
 
         it('should return the id of the inserted document', function(done) {
-            mongoCrud.create(OBJ, COLLECTION, function(id) {
+            mongoCrud.create(OBJ, COLLECTION, function(err, id) {
+                assert.equal(null, err);
                 ID = id;
                 assert(id instanceof ObjectID);
                 assert.equal(id.toString().length, 24);
@@ -74,7 +75,8 @@ describe('Testing MongoCrudLayer', function() {
         );
 
         it('should return a document', function(done) {
-            mongoCrud.read({_id: ID}, COLLECTION, function(doc) {
+            mongoCrud.read({_id: ID}, COLLECTION, function(err, doc) {
+                assert.equal(null, err);
                 assert.equal(doc._id.toString(), ID);
                 assert.equal(doc.name, OBJ.name);
                 done();
@@ -93,7 +95,8 @@ describe('Testing MongoCrudLayer', function() {
         );
 
         it('should return an array of documents', function(done) {
-            mongoCrud.readAll(COLLECTION, function(results) {
+            mongoCrud.readAll(COLLECTION, function(err, results) {
+                assert.equal(null, err);
                 assert.equal(results.length, 1);
                 assert.equal(results[0].name, OBJ.name);
                 done();
@@ -115,16 +118,19 @@ describe('Testing MongoCrudLayer', function() {
             function(done) {
                 OBJ.name = 'Athyrion Westeros';
                 // replace the stored object with the changed one
-                mongoCrud.update({_id: ID}, OBJ, COLLECTION, function(res) {
+                mongoCrud.update({_id: ID}, OBJ, COLLECTION, function(err, res) {
+                    assert.equal(null, err);
                     assert.equal(res.ok, 1);
 
                     // assure that the update was successful
-                    mongoCrud.read({_id: ID}, COLLECTION, function(doc) {
+                    mongoCrud.read({_id: ID}, COLLECTION, function(err, doc) {
+                        assert.equal(null, err);
                         assert.equal(doc._id.toString(), ID);
                         assert.equal(doc.name, 'Athyrion Westeros');
 
                         // assure that the number of documents is the same
-                        mongoCrud.readAll(COLLECTION, function(results) {
+                        mongoCrud.readAll(COLLECTION, function(err, results) {
+                            assert.equal(null, err);
                             assert.equal(results.length, 1);
                         });
 
@@ -148,11 +154,13 @@ describe('Testing MongoCrudLayer', function() {
         it('should delete the stored document and return a result object',
             function(done) {
                 OBJ.name = 'Athyrion Westeros';
-                mongoCrud.delete({_id: ID}, COLLECTION, function(res) {
+                mongoCrud.delete({_id: ID}, COLLECTION, function(err, res) {
+                    assert.equal(null, err);
                     assert.equal(res.ok, 1);
 
                     // assure that there no more docs stored
-                    mongoCrud.readAll(COLLECTION, function(results) {
+                    mongoCrud.readAll(COLLECTION, function(err, results) {
+                        assert.equal(null, err);
                         assert.equal(results.length, 0);
                         done();
                     });
@@ -163,7 +171,8 @@ describe('Testing MongoCrudLayer', function() {
 
     describe('#close()', function() {
         it('should close the database connection', function(done) {
-            mongoCrud.close(function(res) {
+            mongoCrud.close(function(err, res) {
+                assert.equal(null, err);
                 assert.equal(null, res);
                 done();
             });

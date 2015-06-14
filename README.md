@@ -54,7 +54,7 @@ var OBJ = {
 };
 var ID;
 ...
-mongocrud.create(OBJ, COLLECTION, function(id) {
+mongocrud.create(OBJ, COLLECTION, function(err, id) {
     console.log(id);
     ID = id;
 });
@@ -71,7 +71,7 @@ Searches the given collection for documents matching the given criteria and retu
 
 ```javascript
 ...
-mongocrud.read({ _id: ID }, COLLECTION, function(doc) {
+mongocrud.read({ _id: ID }, COLLECTION, function(err, doc) {
     console.log(doc); // { _id: 55617c9226d7023b19edcdd1, name: "Athyrion" }
 });
 ...
@@ -86,7 +86,7 @@ Returns all documents stored in the given collection as an array.
 
 ```javascript
 ...
-mongocrud.readAll(COLLECTION, function(docs) {
+mongocrud.readAll(COLLECTION, function(err, docs) {
     console.log(docs); // [ { _id: 55617c9226d7023b19edcdd1, name: "Athyrion" }, ...]
 });
 ...
@@ -107,7 +107,7 @@ Replaces the object in the given collection with given object.
 
 OBJ.name = 'Athyrion-Westeros';
 
-mongocrud.update({ _id: ID }, OBJ, COLLECTION, function(res) {
+mongocrud.update({ _id: ID }, OBJ, COLLECTION, function(err, res) {
     console.log(res); // { ok: 1, n: 1 }
 });
 ...
@@ -122,7 +122,7 @@ Deletes the document that matches the given criteria.
 
 ```javascript
 ...
-mongocrud.delete({ _id: ID }, COLLECTION, function(res) {
+mongocrud.delete({ _id: ID }, COLLECTION, function(err, res) {
     console.log(res); // { ok: 1, n: 1 }
 });
 ...
