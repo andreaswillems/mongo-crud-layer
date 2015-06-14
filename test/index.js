@@ -4,6 +4,8 @@ var MongoClient = require('mongodb').MongoClient;
 var MongoError = require('mongodb').MongoError;
 var ObjectID = require('mongodb').ObjectID;
 var Db = require('mongodb').Db;
+var WrongNumberOfArgumentsError =
+    require('../helpers/WrongNumberOfArgumentsError');
 
 var DB_URI = 'mongodb://localhost:27017/mongocrud-test';
 var COLLECTION = 'objectStore';
@@ -46,8 +48,21 @@ describe('Testing MongoCrudLayer', function() {
     describe('#create()', function() {
         it('should throw an error when providing less than 3 arguments',
             function(done) {
+
+                var fn = function() {
+                    if (mongoCrud.create()
+                        instanceof  WrongNumberOfArgumentsError) {
+                        throw new Error(
+                            'Wrong number of arguments; 3 arguments necessary');
+                    }
+                };
+
                 assert.throws(
-                    mongoCrud.create(OBJ, function(done) {})
+                    // block
+                    function() {
+                        fn();
+                    },
+                    /Wrong number of arguments; 3 arguments necessary/
                 );
                 done();
             }
