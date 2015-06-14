@@ -10,7 +10,8 @@ var WrongNumberOfArgumentsError =
 var DB_URI = 'mongodb://localhost:27017/mongocrud-test';
 var COLLECTION = 'objectStore';
 var OBJ = {
-    name: 'Athyrion'
+    name: 'Athyrion',
+    fileName: 'testfile.bin'
 };
 
 var mongoCrud = null;
