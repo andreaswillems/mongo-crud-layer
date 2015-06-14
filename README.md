@@ -25,17 +25,20 @@ or add it to your `package.json`.
 First, create a new MongoCrud instance to store the databases URI and (optional) some options.
 
 ```javascript
-var mongocrud = new MongoCrud(uri, options);
+var mongocrud = new MongoCrud(uri, options, false);
 ```
 
 * uri - the URI to MongoDB, e.g. mongodb://localhost:27017/mongocrud-test
 * options - optional settings
+* gridFS - set to true, if objects exceed MongoDB document limit of 16mb, to store objects with GridFS mechanism
 
 ```javascript
 var MongoCrud = require('mongo-crud-layer');
 var mongocrud = new MongoCrud(); 
 // or 
 var mongocrud = new MongoCrud('mongodb://localhost:27017/mongocrudtest');
+// or
+var mongocrud = new MongoCrud('mongodb://localhost:27017/mongocrudtest', {}, true);
 ...
 ```
 
@@ -83,6 +86,7 @@ mongocrud.read({ _id: ID }, COLLECTION, function(err, doc) {
 
 #### readAll(collection, callback)
 Returns all documents stored in the given collection as an array.
+**!!! Not available in GridFS mode !!!**
 
 * collection - the collection to search in
 * callback - the callback function receiving an array containing the results

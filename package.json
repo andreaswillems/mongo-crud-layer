@@ -22,7 +22,6 @@
     "mongodb": "2.0.33"
   },
   "devDependencies": {
-    "async": "^1.0.0",
     "gulp": "^3.8.11",
     "gulp-coveralls": "^0.1.4",
     "mocha": "1.17.x"

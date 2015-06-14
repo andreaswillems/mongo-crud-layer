@@ -11,9 +11,10 @@ var DB_URI = 'mongodb://localhost:27017/mongocrud-test';
 var COLLECTION = 'objectStore';
 var OBJ = {
     name: 'Athyrion',
-    fileName: 'testfile.bin'
+    fileName: 'testfile2.bin'
 };
 
+var GRIDFS = true;
 var mongoCrud = null;
 var ID = null;
 
@@ -25,7 +26,7 @@ describe('Testing MongoCrudLayer', function() {
         MongoClient.connect(DB_URI, function(err, db) {
             var coll = db.collection(COLLECTION);
             coll.drop(function() {
-                mongoCrud = new MongoCrud(DB_URI);
+                mongoCrud = new MongoCrud(DB_URI, {}, GRIDFS);
                 done();
             });
         });
@@ -71,6 +72,22 @@ describe('Testing MongoCrudLayer', function() {
             mongoCrud.create(OBJ, COLLECTION, function(err, id) {
                 assert.equal(null, err);
                 ID = id;
+                assert(id instanceof ObjectID);
+                assert.equal(id.toString().length, 24);
+                done();
+            });
+        });
+
+        it('should store an object bigger than 16mb', function(done) {
+            this.timeout(5000);
+            var OBJ = {
+                name: 'Athyrion',
+                fileName: 'testfile3.bin',
+                payload: new Buffer(20971521)
+            };
+
+            mongoCrud.create(OBJ, COLLECTION, function(err, id) {
+                assert.equal(null, err);
                 assert(id instanceof ObjectID);
                 assert.equal(id.toString().length, 24);
                 done();
@@ -131,14 +148,20 @@ describe('Testing MongoCrudLayer', function() {
             }
         );
 
-        it('should return an array of documents', function(done) {
-            mongoCrud.readAll(COLLECTION, function(err, results) {
-                assert.equal(null, err);
-                assert.equal(results.length, 1);
-                assert.equal(results[0].name, OBJ.name);
-                done();
+        if (!GRIDFS) {
+            it('should return an array of documents', function(done) {
+                mongoCrud.readAll(COLLECTION, function(err, results) {
+                    assert.equal(null, err);
+                    assert(results.length >= 1);
+                    assert.equal(results[0].name, OBJ.name);
+                    done();
+                });
             });
-        });
+        } else {
+            return;
+        }
+
+
     });
 
     describe('#update()', function() {
