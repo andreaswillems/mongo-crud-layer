@@ -25,17 +25,20 @@ or add it to your `package.json`.
 First, create a new MongoCrud instance to store the databases URI and (optional) some options.
 
 ```javascript
-var mongocrud = new MongoCrud(uri, options);
+var mongocrud = new MongoCrud(uri, options, false);
 ```
 
 * uri - the URI to MongoDB, e.g. mongodb://localhost:27017/mongocrud-test
 * options - optional settings
+* gridFS - set to true, if objects exceed MongoDB document limit of 16mb, to store objects with GridFS mechanism
 
 ```javascript
 var MongoCrud = require('mongo-crud-layer');
 var mongocrud = new MongoCrud(); 
 // or 
 var mongocrud = new MongoCrud('mongodb://localhost:27017/mongocrudtest');
+// or
+var mongocrud = new MongoCrud('mongodb://localhost:27017/mongocrudtest', {}, true);
 ...
 ```
 
@@ -47,7 +50,7 @@ The API offers the following methods:
 Creates a MongoDB document from the given object and stores it into the given collection. Returns the _id of the stored document.
 * obj - the object to store
 * collection - the collection to store the object in
-* callback - the callback function receiving the result object return by the insertion operation
+* callback - a callback function with two parameters: error and the ObjectID of the stored object
 
 ```javascript
 var DB_URI = 'mongodb://localhost:27017/mongocrud-test';
@@ -70,7 +73,7 @@ Searches the given collection for documents matching the given criteria and retu
 
 * criteria - the criteria to search for in the database, usually the object's _id
 * collection - the collection to search in
-* callback - the callback function receiving the found document or, in case of an error, the error object
+* callback - a callback function with two parameters: error and the read object
 
 ```javascript
 ...
@@ -83,9 +86,10 @@ mongocrud.read({ _id: ID }, COLLECTION, function(err, doc) {
 
 #### readAll(collection, callback)
 Returns all documents stored in the given collection as an array.
+**!!! Not available in GridFS mode !!!**
 
 * collection - the collection to search in
-* callback - the callback function receiving an array containing the results
+* callback - a callback function with two parameters: error and an array of objects from the collection
 
 ```javascript
 ...
@@ -99,11 +103,12 @@ mongocrud.readAll(COLLECTION, function(err, docs) {
 
 #### update(criteria, obj, collection, callback)
 Replaces the object in the given collection with given object.
+**!!! Not available in GridFS mode !!!**
 
 * criteria - the criteria to search for in the database, usually the object's _id
 * obj - the replacing object
 * collection - the collection to search in
-* callback - the callback function receiving the result object returned by MongoDB
+* callback - a callback function with two parameters: error and a mongodb [result object](http://docs.mongodb.org/manual/reference/command/insert/#insert-command-output)
 
 ```javascript
 ...
@@ -121,7 +126,7 @@ Deletes the document that matches the given criteria.
 
 * criteria - the criteria to search for in the database, usually the object's _id
 * collection - the collection to search in
-* callback - the callback function receiving the result object returned by MongoDB
+* callback - a callback function with two parameters: error and a mongodb [result object](http://docs.mongodb.org/manual/reference/command/insert/#insert-command-output
 
 ```javascript
 ...

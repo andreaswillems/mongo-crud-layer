@@ -1,31 +1,29 @@
 var assert = require('assert');
 var MongoCrud = require('../index.js');
 var MongoClient = require('mongodb').MongoClient;
-var MongoError = require('mongodb').MongoError;
 var ObjectID = require('mongodb').ObjectID;
-var Db = require('mongodb').Db;
-var WrongNumberOfArgumentsError =
-    require('../helpers/WrongNumberOfArgumentsError');
+//var Db = require('mongodb').Db;
 
 var DB_URI = 'mongodb://localhost:27017/mongocrud-test';
 var COLLECTION = 'objectStore';
 var OBJ = {
     name: 'Athyrion',
-    fileName: 'testfile.bin'
+    fileName: 'testfile4.bin'
 };
 
+var GRIDFS = true;
 var mongoCrud = null;
 var ID = null;
 
 
-describe('Testing MongoCrudLayer', function() {
+describe('Testing MongoCrudLayer - regular', function() {
 
     // before everything else connect to database and drop test collection
     before(function(done) {
         MongoClient.connect(DB_URI, function(err, db) {
             var coll = db.collection(COLLECTION);
             coll.drop(function() {
-                mongoCrud = new MongoCrud(DB_URI);
+                mongoCrud = new MongoCrud(DB_URI, {}, GRIDFS);
                 done();
             });
         });
@@ -34,16 +32,6 @@ describe('Testing MongoCrudLayer', function() {
     // close db connection after testing
     after(function(done) {
         mongoCrud.close(done);
-    });
-
-    describe('#connect()', function() {
-        it('should return the db object', function(done) {
-            mongoCrud.connect(function(db) {
-                assert.notEqual(null, db);
-                assert(db instanceof Db);
-                done();
-            });
-        });
     });
 
     describe('#create()', function() {
@@ -76,6 +64,27 @@ describe('Testing MongoCrudLayer', function() {
                 done();
             });
         });
+
+        if (GRIDFS) {
+            it('should store an object bigger than 16mb', function(done) {
+                this.timeout(15000);
+                var date = Date.now();
+                var tmpOBJ = {
+                    name: 'Athyrion',
+                    fileName: 'testfile' + date + '.bin',
+                    //payload: new Buffer(20971521)
+                    payload: new Buffer(17825792) // 17 MB
+                };
+                console.log(tmpOBJ);
+
+                mongoCrud.create(tmpOBJ, COLLECTION, function(err, id) {
+                    assert.equal(null, err);
+                    assert(id instanceof ObjectID);
+                    assert.equal(id.toString().length, 24);
+                    done();
+                });
+            });
+        }
     });
 
     describe('#read()', function() {
@@ -131,14 +140,16 @@ describe('Testing MongoCrudLayer', function() {
             }
         );
 
-        it('should return an array of documents', function(done) {
-            mongoCrud.readAll(COLLECTION, function(err, results) {
-                assert.equal(null, err);
-                assert.equal(results.length, 1);
-                assert.equal(results[0].name, OBJ.name);
-                done();
+        if (!GRIDFS) {
+            it('should return an array of documents', function(done) {
+                mongoCrud.readAll(COLLECTION, function(err, results) {
+                    assert.equal(null, err);
+                    assert(results.length >= 1);
+                    assert.equal(results[0].name, OBJ.name);
+                    done();
+                });
             });
-        });
+        }
     });
 
     describe('#update()', function() {
@@ -163,31 +174,33 @@ describe('Testing MongoCrudLayer', function() {
             }
         );
 
-        it('should update the stored document and return a result object',
-            function(done) {
-                OBJ.name = 'Athyrion Westeros';
-                // replace the stored object with the changed one
-                mongoCrud.update({_id: ID}, OBJ, COLLECTION, function(err, res) {
-                    assert.equal(null, err);
-                    assert.equal(res.ok, 1);
-
-                    // assure that the update was successful
-                    mongoCrud.read({_id: ID}, COLLECTION, function(err, doc) {
+        if (!GRIDFS) {
+            it('should update the stored document and return a result object',
+                function(done) {
+                    OBJ.name = 'Athyrion Westeros';
+                    // replace the stored object with the changed one
+                    mongoCrud.update({_id: ID}, OBJ, COLLECTION, function(err, res) {
                         assert.equal(null, err);
-                        assert.equal(doc._id.toString(), ID);
-                        assert.equal(doc.name, 'Athyrion Westeros');
+                        assert.equal(res.ok, 1);
 
-                        // assure that the number of documents is the same
-                        mongoCrud.readAll(COLLECTION, function(err, results) {
+                        // assure that the update was successful
+                        mongoCrud.read({_id: ID}, COLLECTION, function(err, doc) {
                             assert.equal(null, err);
-                            assert.equal(results.length, 1);
-                        });
+                            assert.equal(doc._id.toString(), ID);
+                            assert.equal(doc.name, 'Athyrion Westeros');
 
-                        done();
+                            // assure that the number of documents is the same
+                            mongoCrud.readAll(COLLECTION, function(err, results) {
+                                assert.equal(null, err);
+                                assert.equal(results.length, 1);
+                            });
+
+                            done();
+                        });
                     });
-                });
-            }
-        );
+                }
+            );
+        }
     });
 
     describe('#delete()', function() {
@@ -219,12 +232,16 @@ describe('Testing MongoCrudLayer', function() {
                     assert.equal(null, err);
                     assert.equal(res.ok, 1);
 
-                    // assure that there no more docs stored
-                    mongoCrud.readAll(COLLECTION, function(err, results) {
-                        assert.equal(null, err);
-                        assert.equal(results.length, 0);
+                    if (!GRIDFS) {
+                        // assure that there no more docs stored
+                        mongoCrud.readAll(COLLECTION, function(err, results) {
+                            assert.equal(null, err);
+                            assert.equal(results.length, 0);
+                            done();
+                        });
+                    } else {
                         done();
-                    });
+                    }
                 });
             }
         );
