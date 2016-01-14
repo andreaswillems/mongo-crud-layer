@@ -1,6 +1,6 @@
 {
   "name": "mongo-crud-layer",
-  "version": "0.2.0",
+  "version": "1.0.1",
   "description": "A simple CRUD layer for node-mongodb-native v2",
   "author": "Andreas Willems <dev.athyrion@gmail.com>",
   "scripts": {
