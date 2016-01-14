@@ -16,7 +16,7 @@
     "crud"
   ],
   "dependencies": {
-    "mongodb": "2.0.33"
+    "mongodb": "2.1.4"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
