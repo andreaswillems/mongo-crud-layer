@@ -11,8 +11,9 @@ var OBJ = {
     fileName: 'testfile4.bin'
 };
 
-var GRIDFS = true;
+var GRIDFS = false;
 var mongoCrud = null;
+var mongoCrudFS = null;
 var ID = null;
 
 
@@ -23,7 +24,8 @@ describe('Testing MongoCrudLayer - regular', function() {
         MongoClient.connect(DB_URI, function(err, db) {
             var coll = db.collection(COLLECTION);
             coll.drop(function() {
-                mongoCrud = new MongoCrud(DB_URI, {}, GRIDFS);
+                mongoCrud = new MongoCrud(DB_URI, {}, false);
+                mongoCrudFS = new MongoCrud(DB_URI, {}, true);
                 done();
             });
         });
@@ -31,7 +33,9 @@ describe('Testing MongoCrudLayer - regular', function() {
 
     // close db connection after testing
     after(function(done) {
-        mongoCrud.close(done);
+        mongoCrud.close(function() {
+          mongoCrudFS.close(done);  
+        });        
     });
 
     describe('#create()', function() {
@@ -65,7 +69,7 @@ describe('Testing MongoCrudLayer - regular', function() {
             });
         });
 
-        if (GRIDFS) {
+        //if (GRIDFS) {
             it('should store an object bigger than 16mb', function(done) {
                 this.timeout(15000);
                 var date = Date.now();
@@ -75,16 +79,16 @@ describe('Testing MongoCrudLayer - regular', function() {
                     //payload: new Buffer(20971521)
                     payload: new Buffer(17825792) // 17 MB
                 };
-                console.log(tmpOBJ);
+                //console.log(tmpOBJ);
 
-                mongoCrud.create(tmpOBJ, COLLECTION, function(err, id) {
+                mongoCrudFS.create(tmpOBJ, COLLECTION, function(err, id) {
                     assert.equal(null, err);
                     assert(id instanceof ObjectID);
                     assert.equal(id.toString().length, 24);
                     done();
                 });
             });
-        }
+        //}
     });
 
     describe('#read()', function() {
@@ -111,8 +115,8 @@ describe('Testing MongoCrudLayer - regular', function() {
         it('should return a document', function(done) {
             mongoCrud.read({_id: ID}, COLLECTION, function(err, doc) {
                 assert.equal(null, err);
-                assert.equal(doc._id.toString(), ID);
-                assert.equal(doc.name, OBJ.name);
+                assert.equal(doc[0]._id.toString(), ID);
+                assert.equal(doc[0].name, OBJ.name);
                 done();
             });
         });
@@ -140,7 +144,7 @@ describe('Testing MongoCrudLayer - regular', function() {
             }
         );
 
-        if (!GRIDFS) {
+        //if (!GRIDFS) {
             it('should return an array of documents', function(done) {
                 mongoCrud.readAll(COLLECTION, function(err, results) {
                     assert.equal(null, err);
@@ -149,7 +153,7 @@ describe('Testing MongoCrudLayer - regular', function() {
                     done();
                 });
             });
-        }
+        //}
     });
 
     describe('#update()', function() {
@@ -174,7 +178,7 @@ describe('Testing MongoCrudLayer - regular', function() {
             }
         );
 
-        if (!GRIDFS) {
+        //if (!GRIDFS) {
             it('should update the stored document and return a result object',
                 function(done) {
                     OBJ.name = 'Athyrion Westeros';
@@ -186,8 +190,8 @@ describe('Testing MongoCrudLayer - regular', function() {
                         // assure that the update was successful
                         mongoCrud.read({_id: ID}, COLLECTION, function(err, doc) {
                             assert.equal(null, err);
-                            assert.equal(doc._id.toString(), ID);
-                            assert.equal(doc.name, 'Athyrion Westeros');
+                            assert.equal(doc[0]._id.toString(), ID);
+                            assert.equal(doc[0].name, 'Athyrion Westeros');
 
                             // assure that the number of documents is the same
                             mongoCrud.readAll(COLLECTION, function(err, results) {
@@ -200,7 +204,7 @@ describe('Testing MongoCrudLayer - regular', function() {
                     });
                 }
             );
-        }
+        //}
     });
 
     describe('#delete()', function() {
@@ -252,7 +256,11 @@ describe('Testing MongoCrudLayer - regular', function() {
             mongoCrud.close(function(err, res) {
                 assert.equal(null, err);
                 assert.equal(null, res);
-                done();
+                mongoCrudFS.close(function(err2, res2) {
+                  assert.equal(null, err2);
+                  assert.equal(null, res2);
+                  done();
+                });
             });
         });
     });

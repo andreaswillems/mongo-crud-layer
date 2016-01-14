@@ -69,11 +69,11 @@ mongocrud.create(OBJ, COLLECTION, function(err, id) {
 
 
 #### read(criteria, collection, callback)
-Searches the given collection for documents matching the given criteria and returns the first one found. The criterium should be in most cases using the _id from the creation process, e.g. criteria = {_id: _id}.
+Searches the given collection for documents matching the given criteria and returns the found documents. The criterium should be in most cases using the _id from the creation process, e.g. criteria = {_id: _id}.
 
 * criteria - the criteria to search for in the database, usually the object's _id
 * collection - the collection to search in
-* callback - a callback function with two parameters: error and the read object
+* callback - a callback function with two parameters: error and the found documents
 
 ```javascript
 ...
