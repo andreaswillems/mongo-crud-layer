@@ -15,6 +15,7 @@
     "mongodb",
     "crud"
   ],
+  "readmeFilename": "README.md",
   "dependencies": {
     "mongodb": "2.1.4"
   },
