@@ -1,5 +1,5 @@
 # Mongo-CRUD-Layer 
-[![Build Status](https://travis-ci.org/Athyrion/mongo-crud-layer.svg?branch=master)](https://travis-ci.org/Athyrion/mongo-crud-layer) 
+[![Build Status](https://travis-ci.org/andreaswillems/mongo-crud-layer.svg?branch=master)](https://travis-ci.org/andreaswillems/mongo-crud-layer) 
 [![npm version](https://badge.fury.io/js/mongo-crud-layer.svg)](http://badge.fury.io/js/mongo-crud-layer) 
 [![Coverage Status](https://coveralls.io/repos/Athyrion/mongo-crud-layer/badge.svg?branch=master)](https://coveralls.io/r/Athyrion/mongo-crud-layer?branch=master)
 
